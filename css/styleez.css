@@ -67,3 +67,7 @@ main>.container {
     padding-bottom: 1rem;
     border-radius: 15px;
 }
+
+.boldMe {
+    font-weight: bold;
+}
