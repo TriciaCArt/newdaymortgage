@@ -59,62 +59,73 @@
     <main class="flex-shrink-0">
         <div class="container mt-5">
             <h1>Loan Calculator</h1>
-            <div class="row">
+            <div class="row row-cols-1 row-cols-md-2">
+                <!-- loan input form -->
                 <div class="col">
-                    <form action="" id="loanNumbers">
-                        <div class="form-group">
-                            <label for="loanAmount" class="form-label">Loan Amount</label>
-                            <input type="number" id="loanAmount" class="form-control" placeholder="Loan Amount">
+                    <form action="" id="loanNumbers" class="loanForm">
+                        <div class="row gy-2">
+                            <div class="form-group">
+                                <label for="loanAmount" class="form-label">Loan Amount</label>
+                                <input type="number" id="loanAmount" class="form-control" value="15000"
+                                    placeholder="Loan Amount" name="loanAmount">
+                            </div>
+                            <div class="form-group">
+                                <label for="loanPayment" class="form-label">How many payments</label>
+                                <input type="number" id="loanPayment" class="form-control" placeholder="Payments"
+                                    value="60" name="loanPayment">
+                            </div>
+                            <div class="form-group">
+                                <label for="loanRate" class="form-label">Rate</label>
+                                <input type="number" id="loanRate" class="form-control" placeholder="Rate" vlaue="7"
+                                    name="loanRate">
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <button type="button" id="btnSubmit"
+                                        class="btn btn-primary btn-outline">Calculate</button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="loanPayment" class="form-label">How many payments</label>
-                            <input type="number" id="loanPayment" class="form-control" placeholder="Payments">
-                        </div>
-                        <div class="form-group">
-                            <label for="loanRate" class="form-label">Rate</label>
-                            <input type="number" id="loanRate" class="form-control" placeholder="Rate">
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-outline">Calculate</button>
                     </form>
                 </div>
+
+                <!-- loan results display -->
                 <div class="col text-center">
-                    <h3>Your Monthly Payments</h3>
-                    <div>
+                    <div id="paySummary">
+                        <h1>Your Monthly Payments</h1>
                         <!-- my monthly payment amount will go here -->
+                        <div id="payment" class="display-3 text-center">$250.00</div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <label>Total Principal</label>
-                            <label>Total Interest</label>
-                            <label>Total Cost</label>
-                        </div>
-                        <div class="col">
-                            <div>
-
-                            </div>
+                            <div for="totPrincipal" class="text-start">Total Principal</div>
+                            <div id="totPrincipal" class="text-end">$0.00</div>
+                            <div for="totInt" class="text-start">Total Interest</div>
+                            <div id="totInt" class="text-end">$0.00</div>
+                            <div for="totCost" class="text-start">Total Cost</div>
+                            <div id="totCost" class="text-end">$0.00</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <table class="table table-striped" id="paymentCalculation">
-                    <thead>
-                        <tr>
-                            <th scope="col">Month</th>
-                            <th scope="col">Payment</th>
-                            <th scope="col">Principal</th>
-                            <th scope="col">Interest</th>
-                            <th scope="col">Total Interest</th>
-                            <th scope="col">Balance</th>
-                        </tr>
-                    </thead>
-                    <tbody id="payCalcBody">
+                <div class="col">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col">Month</th>
+                                <th scope="col">Payment</th>
+                                <th scope="col">Principal</th>
+                                <th scope="col">Interest</th>
+                                <th scope="col">Total Interest</th>
+                                <th scope="col">Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="payCalcBody">
 
-                    </tbody>
-                </table>
-
-
-
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </main>
@@ -147,12 +158,12 @@
 
     <template id="paymentCalculation-template">
         <tr>
-            <td data-name="paymentMonth"></td>
-            <td data-name="paymentAmount"></td>
-            <td data-name="paymentPrincipal"></td>
-            <td data-name="paymentInterest"></td>
-            <td data-name="totalInterest"></td>
-            <td data-name="balance"></td>
+            <td data-id="paymentMonth"></td>
+            <td data-id="paymentAmount"></td>
+            <td data-id="paymentPrincipal"></td>
+            <td data-id="paymentInterest"></td>
+            <td data-id="totalInterest"></td>
+            <td data-id="balance"></td>
         </tr>
     </template>
 
@@ -163,7 +174,7 @@
     </script>
     <script src="/js/site.js"></script>
     <script>
-        document.getElementById("effYou").addEventListener("click", getMessage);
+        document.getElementById('btnSubmit').addEventListener("click", getValues);
     </script>
 </body>
 
