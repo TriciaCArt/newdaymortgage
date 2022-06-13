@@ -29,8 +29,8 @@
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="/index.html">
-                <img src="/img/tcwhiteLogo600.png" class="d-inline-block align-text-center me-1" height="100" alt="">
-                APP NAME!!!!</a>
+                <img src="/img/newdaywhite.png" class="d-inline-block align-text-center me-1" height="50" alt="">
+                New Day Loans</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -47,11 +47,9 @@
                         <a class="nav-link active" aria-current="page" href="/code.html">The Code</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">The Repo</a>
+                        <a class="nav-link" href="https://github.com/TriciaCArt/newdaymortgage">The Repo</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">The Repo</a>
-                    </li>
+
                 </ul>
             </div>
         </div>
@@ -59,42 +57,102 @@
 
     <main class="flex-shrink-0">
         <div class="container">
-            <h1 class="mt-5">The Code. For app name.</h1>
+            <h1 class="mt-5">The Code for New Day Mortgage</h1>
             <div class="row">
                 <div class="col-12 col-lg-8">
                     <pre class="line-numbers">
                         <code class="language-javascript">
-// Step One - get -controller accept requrests
-function getMessage() {
-let msg = document.getElementById("message").value;
-displayMessage(msg);
-}
+// get the loan information from the page
+function getValues() 
+{let loanAmt = Number(document.getElementById("loanAmount").value);
+let loanTerm = parseInt(document.getElementById("loanPayment").value);
+let intRate = parseFloat(document.getElementById("loanRate").value);
 
-// final step - display those values
-function displayMessage(message) {
-// First get the ol element from the page
-element = document.getElementById("results");
+// check for NAN
+if (isNaN(loanAmt)) {alert("Enter Valid Loan Amount! It CANNOT be a CAT!");
 
-// Next create a new li element
-let item = document.createElement("li");
-// add classes to the li element
-item.classList.add("list-group-item");
-// set the message for the li element
-item.innerHTML = message;
+document.getElementById("loanAmt").focus();}
+ else if (isNaN(loanTerm)) {alert("Enter a Payment Term! Enter the number of months you will take to pay back this loan.");
 
-// add the new item to the list
-element.appendChild(item);
-}
+document.getElementById("loanTerm").focus();} 
+
+else if (isNaN(intRate)) {alert("Enter a valid loan percentage rate. Must be a valid number.");
+
+document.getElementById("intRate").focus();} 
+else {alert("Values are correct.");
+let newRate = calcRate(intRate);
+
+let lpayment = calculatePayment(loanAmt, newRate, loanTerm);
+
+let paymentsched = buildSchedule(loanAmt, newRate, loanTerm, lpayment);
+
+displayData(paymentsched, loanAmt, lpayment);}}
+
+function buildSchedule(loanAmt, rate, loanTerm, lpayment) 
+{let payments = [];
+
+let balance = loanAmt;
+let totInt = 0;
+let monthlyInterest = 0;
+let monthlyPrincipal = 0;
+
+
+for (let month = 1; month <= loanTerm; month++) { monthlyInterest=calcInterest(balance, rate); 
+    totInt +=monthlyInterest;
+    monthlyPrincipal=lpayment - monthlyInterest; balance=balance - monthlyPrincipal; 
+    let curPayObj={ month: month, payment: lpayment, principal: monthlyPrincipal, interest: monthlyInterest, totalInterest: totInt, balance: balance }
+    payments.push(curPayObj); } return payments; } 
+    
+// display the table of payments add the summary info at the top of page 
+function displayData(paymentsched, loanAmt, lpayment) { let tableBody=document.getElementById("payCalcBody");
+    let template=document.getElementById("paymentCalculation-template"); 
+    tableBody.innerHTML="" ; 
+    for (let index=0; index < paymentsched.length; index++)
+     { // clone the template let paymentRow=document.importNode(template.content, true);
+    // get an array of objects let paymentCols=paymentRow.querySelectorAll("td");
+    paymentCols[0].textContent=paymentsched[index].month;
+    paymentCols[1].textContent=paymentsched[index].payment.toFixed(2);
+    paymentCols[2].textContent=paymentsched[index].principal.toFixed(2);
+    paymentCols[3].textContent=paymentsched[index].interest.toFixed(2);
+    paymentCols[4].textContent=paymentsched[index].totalInterest.toFixed(2);
+    paymentCols[5].textContent=paymentsched[index].balance.toFixed(2); 
+    tableBody.appendChild(paymentRow); }
+
+    document.getElementById("payment").innerHTML=Number(lpayment).toLocaleString("en-us", { style: "currency" ,
+    currency: "USD" });
+    document.getElementById("totPrincipal").innerHTML=Number(loanAmt).toLocaleString("en-us", {style: "currency" , currency: "USD" });
+    let totInt=paymentsched[paymentsched.length - 1].totalInterest;
+    document.getElementById("totInt").innerHTML=Number(totInt).toLocaleString("en-us", { style: "currency" , currency: "USD" });
+    document.getElementById("totCost").innerHTML=Number(loanAmt + totInt).toLocaleString("en-us", {style: "currency" , currency: "USD" }); }
+    // helper functions function calculatePayment(loanAmt, intRate, loanTerm)
+    { let payment3=0; payment3=(loanAmt * intRate) / (1 - Math.pow(1 + intRate, -loanTerm));
+         return payment3; } 
+    //calculate the rate for the loan function calcRate(rate) { return rate=rate / 1200; } 
+    // calculate function calcInterest(balance, intRate) { return balance * intRate; }
                         </code>
                     </pre>
 
                 </div>
                 <div class="col-12 col-lg-4">
-                    <p>The code is structured in two functions.</p>
-                    <h5>getMessage</h5>
-                    <p>Gets value from the user</p>
-                    <h5>Display Message</h5>
-                    <p>Displays the Items on the page.</p>
+                    <p>This code takes encapsulation to the next level. All of the work for caluclating the loan
+                        is separated out into separate functions that are then called in the main function to
+                        calculate the loan amount, payment, interest, and give the totals.
+                    </p>
+                    <h5>Get Values</h5>
+                    <p>This function not only gets the values that the user entered on the form, but also
+                        calls the other functions that did the work, and just deals with those values. This
+                        function also provides validation for the entry, to make sure the user entered a
+                        number, and not a letter or symbol.
+                    </p>
+                    <h5>Build Schedule</h5>
+                    <p>This is the function that provides the numbers for the table and payments etc broken down
+                        by payment.
+                    </p>
+                    <h5>Display Data</h5>
+                    <p>Then Display Data gets the information and passes it into the table template on the HTML,
+                        which forms the payments table you see.
+                    </p>
+
 
                 </div>
             </div>
@@ -104,22 +162,24 @@ element.appendChild(item);
         <div class="container-fluid">
             <div class="row row-cols-1 row-cols-lg-3 gy-2">
                 <div class="col order-last order-lg-first d-flex align-items-center justify-content-start">
-                    <span class="sizeMe">&copy2022;</span>
+                    <span class="sizeMe">&copy2022 </span>
                     <span class="sizeMe"> Tricia Chitwood | illiannamama@gmail.com</span>
                 </div>
                 <div class="col d-flex aling-items-center justify-content-center justify-content-lg-center">
-                    <img src="/img/tcwhiteLogo600.png" height="100" alt="">
+                    <a href="https://triciachitwoodcoding.netlify.app/"><img src="/img/tcwhiteLogo600.png" height="75"
+                            alt=""></a>
                 </div>
                 <div class="col d-flex align-items-center justify-content-center justify-content-lg-end">
                     <div class="row">
                         <div class="col socialIcons">
-                            <a href="#"><i class="bi bi-linkedin"></i></a>
+                            <a href="https://www.linkedin.com/in/tricia-chitwood-art/"><i
+                                    class="bi bi-linkedin"></i></a>
                         </div>
                         <div class="col socialIcons">
-                            <a href="#"><i class="bi bi-github"></i></a>
+                            <a href="https://github.com/TriciaCArt/newdaymortgage"><i class="bi bi-github"></i></a>
                         </div>
                         <div class="col socialIcons">
-                            <a href="#"><i class="bi bi-twitter"></i></a>
+                            <a href="https://twitter.com/TriciaChitArt"><i class="bi bi-twitter"></i></a>
                         </div>
                     </div>
                 </div>
