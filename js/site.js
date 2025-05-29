@@ -108,6 +108,10 @@ function displayData(paymentsched, loanAmt, lpayment) {
 
 // helper functions
 function calculatePayment(loanAmt, intRate, loanTerm) {
+    // Special-case zero interest loans
+    if (intRate === 0) {
+        return loanAmt / loanTerm;
+    }
     let payment3 = 0;
 
     payment3 = (loanAmt * intRate) / (1 - Math.pow(1 + intRate, -loanTerm));

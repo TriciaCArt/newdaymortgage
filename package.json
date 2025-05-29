@@ -1,0 +1,19 @@
+{
+  "name": "newdaymortgage_b",
+  "version": "1.0.0",
+  "description": "## Overview This repository contains comprehensive testing materials for the New Day Mortgage calculator application. The tests focus on verifying the JavaScript functionality, including unit tests for individual functions and integration tests for the complete application flow.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^30.0.0-beta.3"
+  }
+}
